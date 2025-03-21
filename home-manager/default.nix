@@ -10,6 +10,7 @@ let
     ./home-files.nix
     ./kodi.nix
     ./theme.nix
+    ./xdg.nix
   ];
 in
 {

@@ -8,5 +8,6 @@
     enable = true;
     liveRestore = false;
     autoPrune.enable = true;
+    autoPrune.dates = weekly;
   };
 }

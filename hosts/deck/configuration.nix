@@ -38,7 +38,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  networking.hostName = "steamdeck-nixos"; # Define your hostname.
+  networking.hostName = "steamdeck"; # Define your hostname.
   # networking.hostId = "05ee9e40"; # cut -c-8 </proc/sys/kernel/random/uuid
 
   networking.nameservers = [

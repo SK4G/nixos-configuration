@@ -11,6 +11,7 @@
     duf
     # etcher
     # easytag
+    glib
     # hblock
     hw-probe
     hwinfo
@@ -58,7 +59,8 @@
     ###file management
     # mtpfs
     # udiskie
-    isoimagewriter
+    # isoimagewriter
+    usbimager
 
     ### Benchmarks
     # passmark-performancetest

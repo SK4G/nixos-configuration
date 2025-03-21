@@ -15,6 +15,7 @@ in {
       enable = true;
       autoUpdate = true;
       # enableGyroDsuService = true;
+      enableXorgRotation = true;
     };
     
     hardware = {

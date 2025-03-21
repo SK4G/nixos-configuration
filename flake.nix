@@ -19,6 +19,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    cachix = {
+      url = "github:cachix/cachix";
+    };
+
     disko = {
       url = "github:nix-community/disko/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,6 +62,18 @@
             # ./modules/sysctl.nix
             ./home-manager/tools.nix
             ./modules/users.nix
+            
+            {
+              nix.settings = {
+                download-buffer-size = 524288000;
+                extra-substituters = [
+                  "https://0uptime.cachix.org;"
+                ];
+                extra-trusted-public-keys = [
+                  "0uptime.cachix.org-1:ctw8yknBLg9cZBdqss+5krAem0sHYdISkw/IFdRbYdE="
+                ];
+              };
+            }
 
           ] ++ nixpkgs.lib.optional (configuration != null)
               # Use host configuration
@@ -106,6 +122,7 @@
             ./modules/printers
             ./modules/polkit.nix
             # ./modules/power-settings.nix
+            ./modules/virt-manager.nix
             ./modules/waydroid.nix
           ];
         }

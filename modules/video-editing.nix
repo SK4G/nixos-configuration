@@ -24,8 +24,8 @@
     obs-studio-plugins.obs-vkcapture
     ocenaudio
     peek
-    davinci-resolve
-    # davinci-resolve-studio
+    # davinci-resolve
+    davinci-resolve-studio
     # kdenlive
     # simplescreenrecorder
   ];
