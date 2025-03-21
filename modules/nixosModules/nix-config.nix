@@ -22,9 +22,12 @@
     serviceConfig.Type = "oneshot";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "adobe-reader-9.5.5"
-    "freeimage-unstable-2021-11-01"
-  ];
+  nixpkgs.config = {
+    allowUnfree = true;
+    android_sdk.accept_license = true;
+    permittedInsecurePackages = [
+      "adobe-reader-9.5.5"
+      "freeimage-unstable-2021-11-01"
+    ];
+  }
 }
