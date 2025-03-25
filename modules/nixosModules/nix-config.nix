@@ -29,5 +29,5 @@
       "adobe-reader-9.5.5"
       "freeimage-unstable-2021-11-01"
     ];
-  }
+  };
 }

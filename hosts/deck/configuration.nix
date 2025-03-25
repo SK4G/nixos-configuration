@@ -23,9 +23,6 @@
 
   boot.consoleLogLevel = 1;
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelParams = [ "amdgpu.seamless=1" ];
-
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     # nodejs

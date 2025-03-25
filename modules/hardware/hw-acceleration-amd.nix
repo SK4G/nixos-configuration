@@ -9,7 +9,6 @@
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver = {
-    videoDrivers = [ "amdgpu" ];
     enableTearFree = true;
   };
   hardware.graphics = {
