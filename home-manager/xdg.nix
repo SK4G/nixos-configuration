@@ -14,7 +14,7 @@
     enable = true;
     portal.enable = true;
     portal.configPackages = [ pkgs.xdg-desktop-portal-gtk ];
-    portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-user-dirs ];
     mimeApps = {
       enable = true;
 

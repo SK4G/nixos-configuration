@@ -9,21 +9,26 @@
     enable = true;
     noDesktop = true;
     enableXfwm = false;
+    # enableWaylandSession = true;
+    # waylandSessionCompositor = "labwc --startup"
   };
 
   services.gnome.gnome-keyring.enable = true;
   services.xserver.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
   # startx must be enabled for gamescope x sessions to be started
   services.xserver.displayManager.startx.enable = true;
-  # services.xserver.displayManager.lightdm.enable = true;
-  services.displayManager.defaultSession = "none+awesome";
+  services.xserver.displayManager.startx.generateScript = true;
+  # services.displayManager.defaultSession = "xfce";
+  # services.displayManager.defaultSession = "none+awesome";
+  services.displayManager.defaultSession = "xfce+awesome";
   services.xserver.windowManager.awesome.enable = true;
-   services.xserver.windowManager.awesome = {
-     luaModules = with pkgs.luaPackages; [
-       luarocks # is the package manager for Lua modules
-       luadbi-mysql # Database abstraction layer
-     ];
-   };
+  services.xserver.windowManager.awesome = {
+    luaModules = with pkgs.luaPackages; [
+      luarocks # is the package manager for Lua modules
+      luadbi-mysql # Database abstraction layer
+    ];
+  };
 
   imports =
     [
@@ -51,8 +56,6 @@
     rofi
     # rxvt-unicode
     widevine-cdm
-    xdg-desktop-portal
-    xdg-user-dirs
     xorg.xkill
   ];
 

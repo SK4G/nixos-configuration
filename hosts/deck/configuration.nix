@@ -45,7 +45,9 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
+  
+  i18n.defaultLocale = "en_US.UTF-8";
+  time.timeZone = "America/Chicago";
   services.fwupd.enable = true;
 
   # This value determines the NixOS release from which the default

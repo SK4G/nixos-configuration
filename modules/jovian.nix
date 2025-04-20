@@ -15,7 +15,7 @@ in {
       enable = true;
       autoUpdate = true;
       # enableGyroDsuService = true;
-      enableXorgRotation = true;
+      # enableXorgRotation = true;
     };
     
     hardware = {
@@ -26,12 +26,14 @@ in {
 
     steam = {
       enable = true;
-      autoStart = true;
+      # autoStart = true;
       # desktopSession = "none+awesome";
       desktopSession = "xfce+awesome";
       # desktopSession = "xfce";
-      # desktopSession = "plasma";
       user = myUsername;
+    };
+    steamos = {
+      useSteamOSConfig = true;
     };
 
     decky-loader = {
@@ -55,13 +57,6 @@ in {
   };
 
   # services.displayManager.sddm.enable = lib.mkIf config.jovian.steam.autoStart (lib.mkForce false);
-
-  networking.networkmanager.enable = true;
-
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  time.timeZone = "America/Chicago";
-  
   # boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # boot.kernelPackages = pkgs.jovian-chaotic.linux_jovian;
 

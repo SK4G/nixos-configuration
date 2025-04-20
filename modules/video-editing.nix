@@ -31,7 +31,6 @@
   ];
 
   hardware.graphics = {
-    enable = true;
     extraPackages = with pkgs; [
       # Davinci Resolve dependencies
       # rocm-opencl-icd
