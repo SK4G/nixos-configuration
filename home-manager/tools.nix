@@ -2,6 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
+    appimage-run
     # asciinema
     bash-completion
     bat
@@ -52,6 +53,7 @@
     wget
     # volumeicon
     yt-dlp
+    xdotool
     # xorg.libX11.dev
     # xorg.libXft
     # xorg.libXinerama

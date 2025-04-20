@@ -9,6 +9,7 @@
 {
   home.packages = with pkgs; [
     android-tools
+    # apkeditor
     # android-studio
     # android-file-transfer
     # android-backup-extractor
