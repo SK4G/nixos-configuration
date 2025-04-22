@@ -66,10 +66,10 @@
             {
               nix.settings = {
                 download-buffer-size = 524288000;
-                extra-substituters = [
-                  "https://0uptime.cachix.org;"
+                substituters = [
+                  "https://0uptime.cachix.org"
                 ];
-                extra-trusted-public-keys = [
+                trusted-public-keys = [
                   "0uptime.cachix.org-1:ctw8yknBLg9cZBdqss+5krAem0sHYdISkw/IFdRbYdE="
                 ];
               };
