@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  imports = [
+    ./adobe-reader.nix
+  ];
+
   # hardware.printers = {
   #   ensurePrinters = [
   #     # {
@@ -43,7 +47,6 @@
   # };
   
   environment.systemPackages = with pkgs; [
-    adobe-reader
     # gnome.simple-scan
     # gutenprint
     # libxcrypt
@@ -65,9 +68,4 @@
     brlaser
     gutenprint
   ];
-  
-  nixpkgs.config.permittedInsecurePackages = [
-    "adobe-reader-9.5.5"
-  ];
-
 }
