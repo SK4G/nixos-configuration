@@ -20,8 +20,9 @@
   boot.loader.systemd-boot.consoleMode = "auto";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 3;
-
   boot.consoleLogLevel = 1;
+  boot.supportedFilesystems = [ "fuse" ];
+  programs.fuse.userAllowOther = true;
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [

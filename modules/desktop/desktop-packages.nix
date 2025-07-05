@@ -26,7 +26,7 @@
     vivaldi-ffmpeg-codecs
     # vlc
     # xournalpp
-    # zoom
+    zoom
 
     #### media
     # jellyfin

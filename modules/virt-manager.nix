@@ -6,6 +6,8 @@
   virtualisation.libvirtd = {
     enable = true;
     qemu.ovmf.enable = true;
+    # needed for virtfs host to guest sharing
+    qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
   };
 
   virtualisation.spiceUSBRedirection.enable = true;
@@ -14,4 +16,6 @@
   users.users.luiz = {
     extraGroups = [ "libvirtd" ];
   };
+
+  services.envfs.enable = true;
 }

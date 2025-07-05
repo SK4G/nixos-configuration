@@ -108,7 +108,6 @@
             inputs.chaotic.nixosModules.default
 
             ./modules/jovian.nix
-
             ./modules/hardware/hw-acceleration-amd.nix
             ./modules/hardware/1440p-monitor.nix
             ./modules/desktop
