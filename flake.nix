@@ -73,6 +73,9 @@
                   "0uptime.cachix.org-1:ctw8yknBLg9cZBdqss+5krAem0sHYdISkw/IFdRbYdE="
                 ];
               };
+              nixpkgs.config = {
+                allowUnfree = true;
+              };
             }
 
           ] ++ nixpkgs.lib.optional (configuration != null)

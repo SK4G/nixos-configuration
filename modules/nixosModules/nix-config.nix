@@ -30,4 +30,6 @@
       "freeimage-unstable-2021-11-01"
     ];
   };
+  
+  programs.nix-ld.enable = true;
 }
