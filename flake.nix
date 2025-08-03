@@ -126,7 +126,12 @@
             # ./modules/power-settings.nix
             ./modules/virt-manager.nix
             ./modules/waydroid.nix
-            ./modules/acli.nix
+
+            ({ pkgs, ... }: {
+              environment.systemPackages = [
+                (pkgs.callPackage ./modules/acli.nix {})
+              ];
+            })
           ];
         }
         {
