@@ -14,13 +14,13 @@
     # kate
     lxappearance
     # micro
+    mission-center
     mpv
     # nitrogen
     # protonvpn-cli
     # pywal
     scrcpy
     # telegram-desktop
-    vvave
     # variety
     vivaldi
     vivaldi-ffmpeg-codecs

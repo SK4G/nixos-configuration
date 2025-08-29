@@ -6,10 +6,12 @@
 {
   nixpkgs.overlays = [
     (final: prev: {
-      davinci-resolve = prev.davinci-resolve.override (old: {
+      davinci-resolve-studio = prev.davinci-resolve-studio.override (old: {
         buildFHSEnv = a: (prev.buildFHSEnv (a // {
           extraBwrapArgs = a.extraBwrapArgs ++ [
             ''--bind /run/opengl-driver/etc/OpenCL /etc/OpenCL''
+            # redirect Resolve's "Extras" dir away from /nix/store to a writable location
+            ''--bind ${config.xdg.dataHome or "$HOME/.local/share"}/DaVinciResolve/Extras /opt/resolve/Extras''
           ];
         }));
       });

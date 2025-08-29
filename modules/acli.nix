@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://acli.atlassian.com/linux/latest/acli_linux_amd64/acli";
-    sha256 = "8mHTHBQToRFrFHmCSHPt6g+3UDiaVgLMZfWHipGF444=";
+    sha256 = "AKgCcLf49M7xwLxB4JgAL5IAFIXCcEUcb+QruHlOGuI=";
   };
 
   nativeBuildInputs = [ makeWrapper ];

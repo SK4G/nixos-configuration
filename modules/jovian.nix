@@ -14,6 +14,7 @@ in {
     devices.steamdeck = {
       enable = true;
       autoUpdate = true;
+      enableOsFanControl = true;
       # enableGyroDsuService = true;
       # enableXorgRotation = true;
     };
@@ -29,7 +30,6 @@ in {
       # autoStart = true;
       # desktopSession = "none+awesome";
       desktopSession = "xfce+awesome";
-      # desktopSession = "xfce";
       user = myUsername;
     };
     steamos = {
@@ -58,7 +58,7 @@ in {
 
   # services.displayManager.sddm.enable = lib.mkIf config.jovian.steam.autoStart (lib.mkForce false);
   # boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  # boot.kernelPackages = pkgs.jovian-chaotic.linux_jovian;
+  boot.kernelPackages = pkgs.jovian-chaotic.linuxPackages_jovian;
 
 
   environment.systemPackages = with pkgs; [

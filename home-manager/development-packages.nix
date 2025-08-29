@@ -37,6 +37,11 @@
     # ]))
     # tk
     # tcl
+
+    # llm tools
+    code-cursor-fhs
+    lmstudio
+    # llama-cpp
   ];
 
   programs.git = {
