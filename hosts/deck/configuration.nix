@@ -11,6 +11,7 @@
     })
 
     ./hardware-configuration.nix
+    ./sdcard-automount.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
