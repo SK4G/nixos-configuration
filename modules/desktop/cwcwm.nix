@@ -13,7 +13,6 @@
   libinput,
   libxcb,
   libxkbcommon,
-  lua,
   luajit,
   makeWrapper,
   wayland,
@@ -27,7 +26,6 @@
   gdk-pixbuf,
   pango,
   glib,
-  libstartup_notification,
   wrapGAppsHook,
   swaybg,
   waybar,
@@ -38,8 +36,6 @@
   gtk3 ? null,
   librsvg,
   dbus,
-  libpthreadstubs,
-  libxdg_basedir,
   net-tools,
   xcb-util-cursor,
 }:
@@ -57,7 +53,6 @@ let
     gdk-pixbuf
     pango
     glib
-    libstartup_notification
   ] ++ lib.optional gtk3Support gtk3;
 in
 
@@ -101,10 +96,6 @@ stdenv.mkDerivation rec {
     librsvg
     dbus
     gdk-pixbuf
-    libpthreadstubs
-    libstartup_notification
-    libxdg_basedir
-    lua
     net-tools
     pango
     xcb-util-cursor
@@ -112,60 +103,11 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = commonDeps;
 
-  cmakeFlags = [
-    #"-DGENERATE_MANPAGES=ON"
-    "-DOVERRIDE_VERSION=${version}"
-  ]
-  ++ lib.optional lua.pkgs.isLuaJIT "-DLUA_LIBRARY=${lua}/lib/libluajit-5.1.so";
+  doCheck = true;
 
   GI_TYPELIB_PATH = "${pango.out}/lib/girepository-1.0";
-  # LUA_CPATH and LUA_PATH are used only for *building*, see the --search flags
-  # below for how awesome finds the libraries it needs at runtime.
-  LUA_CPATH = "${luaEnv}/lib/lua/${lua.luaversion}/?.so";
-  LUA_PATH = "${luaEnv}/share/lua/${lua.luaversion}/?.lua;;";
-  
-  postPatch = ''
-    # Fix plugin path detection for Nix environment
-    substituteInPlace defconfig/oneshot.lua \
-      --replace 'local plugins_folder = cwc.is_nested() and "./build/plugins" or cwc.get_datadir() .. "/plugins"' \
-                'local function find_plugins_folder()
-      if cwc.is_nested() then
-          return "./build/plugins"
-      end
-
-      local data_dirs = (os.getenv("XDG_DATA_DIRS") or "/usr/local/share:" + "${placeholder "out"}/share"):split(":")
-
-      for _, base in ipairs(data_dirs) do
-          local path = base .. "/cwc/plugins"
-          local f = io.open(path .. "/cwcle.so", "r")
-          if f then
-              f:close()
-              return path
-          end
-      end
-
-      return cwc.get_datadir() .. "/plugins"
-    end
-    local plugins_folder = find_plugins_folder()'
-
-    # Optional: patch any hardcoded paths in rc.lua if needed
-  '';
 
   postInstall = ''
-    mkdir -p "$out/lib/cwc/plugins"
-    mkdir -p "$out/share/cwc"
-
-    # Copy default config
-    cp -r ${src}/defconfig "$out/share/cwc/"
-
-    # Copy plugins if available
-    if [ -d "$out/share/cwc/plugins" ]; then
-        cp "$out/share/cwc/plugins"/*.so "$out/lib/cwc/plugins/" || true
-    fi
-    if [ -d "plugins" ] && [ -n "$(ls plugins/*.so 2>/dev/null)" ]; then
-        cp plugins/*.so "$out/lib/cwc/plugins/" || true
-    fi
-
     # Wrap the binary with all required environment variables
     wrapProgram "$out/bin/cwc" \
       --prefix PATH : "${lib.makeBinPath [
@@ -196,9 +138,7 @@ DesktopNames=CwCwm
 X-WL-Session=true
 EOF
   '';
-  passthru = {
-    inherit lua;
-  };
+
   passthru.providedSessions = [ "cwcwm" ];
 
   meta = with lib; {
