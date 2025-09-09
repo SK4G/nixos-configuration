@@ -27,11 +27,6 @@
   pango,
   glib,
   wrapGAppsHook,
-  swaybg,
-  waybar,
-  playerctl,
-  swayidle,
-  aria2,
   gtk3Support ? false,
   gtk3 ? null,
   librsvg,
@@ -110,14 +105,6 @@ stdenv.mkDerivation rec {
   postInstall = ''
     # Wrap the binary with all required environment variables
     wrapProgram "$out/bin/cwc" \
-      --prefix PATH : "${lib.makeBinPath [
-        luaEnv
-        swaybg
-        waybar
-        playerctl
-        swayidle
-        aria2
-      ]}" \
       --prefix LUA_PATH : "${luaEnv}/share/lua/5.1/?.lua;${luaEnv}/share/lua/5.1/?/init.lua;${placeholder "out"}/share/cwc/?.lua" \
       --prefix LUA_CPATH : "${luaEnv}/lib/lua/5.1/?.so;${placeholder "out"}/lib/cwc/plugins/?.so" \
       --prefix GI_TYPELIB_PATH : "${lib.makeSearchPath "lib/girepository-1.0" [ gobject-introspection gtk3 pango gdk-pixbuf ]}" \
