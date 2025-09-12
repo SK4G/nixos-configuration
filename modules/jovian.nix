@@ -57,8 +57,12 @@ in {
   };
 
   # services.displayManager.sddm.enable = lib.mkIf config.jovian.steam.autoStart (lib.mkForce false);
-  # boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  # Default kernel
   boot.kernelPackages = pkgs.jovian-chaotic.linuxPackages_jovian;
+  # Specialisation for DaVinci Resolve working kernel
+  specialisation.davinci-resolve.configuration = {
+    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+  };
 
 
   environment.systemPackages = with pkgs; [
