@@ -3,12 +3,10 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     nixpkgs = {
-      follows = "chaotic/nixpkgs";
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
     jovian = {
-      follows = "chaotic/jovian";
       url = "github:Jovian-Experiments/Jovian-NixOS";
     };
 
@@ -53,7 +51,6 @@
 
             # Common modules
             ./modules/nixosModules
-
             ./home-manager
 
             ./modules/flakes.nix
@@ -92,7 +89,6 @@
             ./modules/desktop
             ./modules/desktop/awesome.nix
             # ./modules/desktop/gnome.nix
-            # ./modules/desktop/plasma5.nix
             # ./modules/desktop/hyprland.nix
 
             ./modules/hardware/hw-acceleration-amd.nix
@@ -126,11 +122,13 @@
             # ./modules/power-settings.nix
             ./modules/virt-manager.nix
             ./modules/waydroid.nix
-
+            ./modules/dev-containers
+            
             ({ pkgs, ... }: {
-              environment.systemPackages = [
-                (pkgs.callPackage ./modules/acli.nix {})
-              ];
+              environment.systemPackages =
+                builtins.map (path: pkgs.callPackage path { }) [
+                  ./modules/acli.nix
+                ];
             })
           ];
         }
@@ -143,7 +141,6 @@
             })
 
             ./modules/desktop
-            ./modules/desktop/plasma5.nix
             # ./modules/desktop/gnome.nix
             ./modules/autoLogin.nix
             ./modules/iso.nix

@@ -2,6 +2,7 @@
 {
   nix.settings = {
     trusted-users = [ "@wheel" ];
+    warn-dirty = false;
   };
 
   nix.gc = {

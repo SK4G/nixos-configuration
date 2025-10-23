@@ -10,6 +10,8 @@
     curl
     dex
     duf
+    e2fsprogs
+    exfatprogs
     # etcher
     # easytag
     glib

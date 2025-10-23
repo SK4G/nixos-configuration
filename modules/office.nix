@@ -23,6 +23,7 @@
     noto-fonts         # fallback font
     noto-fonts-cjk-sans     # fallback font
     noto-fonts-emoji   # fallback font
+    noto-fonts-color-emoji
     font-awesome       # Used for misc symbols
 
     # Misc additional fonts

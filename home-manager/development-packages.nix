@@ -46,12 +46,14 @@
 
   programs.git = {
     enable = true;
-    userName = "Luiz Salazar";
-    userEmail = "luizsalazar87@gmail.com";
-    aliases = {
-      # ap = "add -p";
-    };
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Luiz Salazar";
+        email = "luizsalazar87@gmail.com";
+      };
+      alias = {
+        # ap = "add -p";
+      };
       init = {
         defaultBranch = "main";
       };

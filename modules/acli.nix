@@ -7,11 +7,11 @@
 
 stdenv.mkDerivation rec {
   pname = "acli";
-  version = "1.3.0-stable";
+  version = "1.3.3-stable";
 
   src = fetchurl {
     url = "https://acli.atlassian.com/linux/latest/acli_linux_amd64/acli";
-    sha256 = "AKgCcLf49M7xwLxB4JgAL5IAFIXCcEUcb+QruHlOGuI=";
+    sha256 = "hnEAQMtbvtTfxQt7c959EaIeKrPeLC9k3EO9Hcre9as=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
