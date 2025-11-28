@@ -7,7 +7,6 @@ in {
   imports = [
     ./desktop
     ./desktop/awesome.nix
-
   ];
 
   jovian = {
@@ -64,24 +63,16 @@ in {
     boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
   };
 
-
   environment.systemPackages = with pkgs; [
+    proton-ge-custom
+  ] ++ (with jovian-chaotic; [
     mangohud
-    # galileo-mura
-    # gamescope-session
-    # linux_jovian
+    # mesa-radeonsi-jupiter
     powerbuttond
-    # steam
-    # steam_notif_daemon
     steamdeck-bios-fwupd
     steamdeck-dsp
     steamdeck-firmware
     steamdeck-hw-theme
-    
-    ### chaotic packages
-    proton-ge-custom
-    # jovian-chaotic.linux_jovian
-    jovian-chaotic.mesa-radeonsi-jupiter
-    jovian-chaotic.mesa-radv-jupiter
-  ];
+    mesa-radeonsi-jupiter
+  ]);
 }
