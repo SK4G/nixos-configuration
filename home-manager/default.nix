@@ -4,7 +4,7 @@ let
     {
       home.stateVersion = "24.05";
     }
-    ./chrome.nix
+    # ./chrome.nix
     ./development-packages.nix
     # ./firefox.nix
     ./home-files.nix
@@ -38,5 +38,11 @@ in
 
   users.users.luiz.shell = pkgs.zsh;
   users.users.root.shell = pkgs.zsh;
+
+  environment.pathsToLink = [
+    "/share/applications"
+    "/share/xdg-desktop-portal"
+  ];
+
 
 }

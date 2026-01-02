@@ -14,6 +14,7 @@
         "lp"
         "networkmanager"
         "plugdev"
+        "render"
         "scanner"
         "storage"
         "video"

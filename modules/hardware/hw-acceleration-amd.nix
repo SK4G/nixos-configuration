@@ -8,22 +8,30 @@
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
+
+  # AMDGPU specific settings to reduce DMCUB errors
+  boot.kernelParams = [
+    "amdgpu.gpu_recovery=1"
+    "amdgpu.dc=1"
+    "amdgpu.debug=dmcub"
+    "amdgpu.no_wb=0"
+  ];
+
   services.xserver = {
     enableTearFree = true;
   };
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      amdvlk
       libvdpau-va-gl
-      vaapiVdpau
+      libva-vdpau-driver
     ];
   };
 
   # To enable Vulkan support for 32-bit applications, also add:
-  hardware.graphics.extraPackages32 = [
-    pkgs.driversi686Linux.amdvlk
-  ];
+  # hardware.graphics.extraPackages32 = [
+  #   pkgs.driversi686Linux.mesa
+  # ];
 
   # Force radv
   # environment.variables.AMD_VULKAN_ICD = "RADV";

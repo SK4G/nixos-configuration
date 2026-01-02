@@ -16,13 +16,12 @@
   fonts.packages = with pkgs; [
     # ms fonts
     corefonts
-    vistafonts
+    vista-fonts
 
     aileron            # Used for user interface
     go-font            # Main monospace font
     noto-fonts         # fallback font
     noto-fonts-cjk-sans     # fallback font
-    noto-fonts-emoji   # fallback font
     noto-fonts-color-emoji
     font-awesome       # Used for misc symbols
 

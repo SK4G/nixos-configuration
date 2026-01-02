@@ -35,9 +35,6 @@
   hardware.graphics = {
     extraPackages = with pkgs; [
       # Davinci Resolve dependencies
-      # rocm-opencl-icd
-      # rocm-opencl-runtime
-      # rocmPackages.rocm-runtime
       # rocmPackages.rocminfo
       rocmPackages.clr.icd
       # mesa.opencl
@@ -45,4 +42,11 @@
   };
   hardware.amdgpu.opencl.enable = true;
 
+  systemd.tmpfiles.rules = [
+    "L+ /opt/rocm/hip - - - - ${pkgs.rocmPackages.clr}"
+  ];
+
+  hardware.graphics = {
+    enable32Bit = true;
+  };
 }
