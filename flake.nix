@@ -1,6 +1,9 @@
 {
   inputs = {
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -8,9 +11,14 @@
 
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    # jovian.follows = "chaotic/jovian";
 
-    yuzu.url = "git+https://codeberg.org/K900/yuzu-flake";
+    yuzu = {
+      url = "git+https://codeberg.org/K900/yuzu-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -19,10 +27,16 @@
 
     cachix = {
       url = "github:cachix/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     disko = {
       url = "github:nix-community/disko/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    cwcwm = {
+      url = "github:Cudiph/cwcwm";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -40,7 +54,7 @@
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs;
+            inherit inputs host;
           };
           modules = [
             # Configure disko module
@@ -59,6 +73,7 @@
             # ./modules/sysctl.nix
             ./home-manager/tools.nix
             ./modules/users.nix
+            ./modules/google-chrome.nix
             
             {
               nix.settings = {
@@ -103,13 +118,60 @@
         {
           host = "deck";
           extraModules = [
+            # ({ pkgs, ... }: {
+            #   nixpkgs.overlays = [
+            #     inputs.cwcwm.overlays.default
+            #     (import ./overlays/cwcwm)
+            #   ];
+            # })
             inputs.jovian.nixosModules.jovian
             inputs.chaotic.nixosModules.default
 
             ./modules/jovian.nix
             ./modules/hardware/hw-acceleration-amd.nix
             ./modules/hardware/1440p-monitor.nix
+            ./modules/nixosModules/networking.nix
             ./modules/desktop
+            # ./modules/desktop/cwcwm-desktop.nix
+            ./modules/video-editing.nix
+            # ./home-manager/kodi.nix
+
+            #./home-manager/development-packages.nix
+            ./modules/gaming.nix
+            ./modules/office.nix
+            # ./modules/printers
+            ./modules/printers
+            ./modules/polkit.nix
+            # ./modules/power-settings.nix
+            ./modules/virt-manager.nix
+            ./modules/waydroid.nix
+            ./modules/dev-containers
+            
+            ({ pkgs, ... }: {
+              environment.systemPackages =
+                builtins.map (path: pkgs.callPackage path { }) [
+                  ./modules/acli.nix
+                ];
+            })
+          ];
+        }
+        {
+          host = "emerald";
+          extraModules = [
+            # ({ pkgs, ... }: {
+            #   nixpkgs.overlays = [
+            #     inputs.cwcwm.overlays.default
+            #     (import ./overlays/cwcwm)
+            #   ];
+            # })
+            inputs.jovian.nixosModules.jovian
+            inputs.chaotic.nixosModules.default
+
+            ./modules/jovian.nix
+            ./modules/hardware/hw-acceleration-nvidia.nix
+            ./modules/hardware/1440p-monitor.nix
+            ./modules/desktop
+            # ./modules/desktop/cwcwm-desktop.nix
             ./modules/video-editing.nix
             # ./home-manager/kodi.nix
 

@@ -9,6 +9,7 @@
 {
   home.packages = with pkgs; [
     android-tools
+    antigravity
     # apkeditor
     # android-studio
     # android-file-transfer
@@ -39,9 +40,12 @@
     # tcl
 
     # llm tools
-    code-cursor-fhs
     lmstudio
     # llama-cpp
+
+    # build tools
+    gcc
+    gnumake
   ];
 
   programs.git = {

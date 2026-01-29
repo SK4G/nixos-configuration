@@ -1,11 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   chromePkgs = import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/b3b96cb5f1ad0eab49d147a69b6fe57e584f08ff.tar.gz";
-    sha256 = "05x2lbgk5p2vy74d25xlzh3j6m4c1d8mh4fdqzibd3h28nq0k3dz";
+    sha256 = "1pr30fgx1rli4071fl569nar15sciqcrz88kj0a9prni6qyd3i6y";
   }) {
-    system = config.nixpkgs.system;
+    system = pkgs.stdenv.hostPlatform.system;
     config = {
       allowUnfree = true;
     };
@@ -14,7 +14,7 @@ in {
   options = {
     services.googleChrome.enable = lib.mkOption {
       type = lib.types.bool;
-      default = false;
+      default = true;
       description = "Enable Google Chrome (from pinned nixpkgs commit b3b96cb5f1ad0eab49d147a69b6fe57e584f08ff).";
     };
   };

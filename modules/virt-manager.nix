@@ -5,7 +5,6 @@
 
   virtualisation.libvirtd = {
     enable = true;
-    qemu.ovmf.enable = true;
     # needed for virtfs host to guest sharing
     qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
   };

@@ -1,12 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # Configure programs
-  programs = {
-    # Android debug bridge: communicate with devices.
-    adb.enable = true;
-  };
-
   # Enable WayDroid
   virtualisation.waydroid.enable = true;
 

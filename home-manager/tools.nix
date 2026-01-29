@@ -15,6 +15,7 @@
     # etcher
     # easytag
     glib
+    gromit-mpx
     # hblock
     hw-probe
     hwinfo
@@ -34,7 +35,8 @@
     # gnome-keyring
     # gnumake
     gparted
-    guvcview
+    # guvcview
+    joplin-desktop
     jq
     # jsoncpp
     imagemagick
@@ -46,11 +48,13 @@
     ripgrep
     # sof-firmware
     # sshpass
+    spotdl
     sysz
     texliveBasic
     tree
     unrar
     unzip
+    xclip
     # xdotool
     wget
     # volumeicon

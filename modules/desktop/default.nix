@@ -9,6 +9,7 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   # Recommended for PipeWire
@@ -32,11 +33,12 @@
       liberation_ttf
       symbola
       terminus_font
-      ubuntu_font_family
+      ubuntu-classic
       wqy_microhei
       wqy_zenhei
     ];
     fontconfig = {
+      useEmbeddedBitmaps = true;
       defaultFonts = {
         serif = [
           "Ubuntu"

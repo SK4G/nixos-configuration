@@ -51,25 +51,23 @@
           echo "UTC" | sudo tee "$CONTAINER_PATH/etc/timezone" > /dev/null
           sudo ln -sf /usr/share/zoneinfo/UTC "$CONTAINER_PATH/etc/localtime"
 
-          # Copy host git config from .config/git/config
+          # Clean up and recreate home directory properly
+          sudo rm -rf "$CONTAINER_PATH/home/lineage"
           sudo mkdir -p "$CONTAINER_PATH/home/lineage"
+          sudo chown 0:0 "$CONTAINER_PATH/home/lineage"
+          sudo chmod 755 "$CONTAINER_PATH/home/lineage"
+
+          # Copy host git config if it exists (simpler approach)
           if [ -f "$HOME/.config/git/config" ]; then
             sudo mkdir -p "$CONTAINER_PATH/home/lineage/.config/git"
             sudo cp "$HOME/.config/git/config" "$CONTAINER_PATH/home/lineage/.config/git/config"
           elif [ -f "$HOME/.gitconfig" ]; then
             sudo cp "$HOME/.gitconfig" "$CONTAINER_PATH/home/lineage/.gitconfig"
           fi
-          # Create default git config if none exists
-          if [ ! -f "$CONTAINER_PATH/home/lineage/.gitconfig" ] && [ ! -f "$CONTAINER_PATH/home/lineage/.config/git/config" ]; then
-            cat > "$CONTAINER_PATH/home/lineage/.gitconfig" << 'EOF'
-[user]
-    email = builder@example.com
-    name = Lineage Builder
-EOF
-          fi
 
-          # Hostname
+          # Hostname and hosts file for proper resolution
           echo "ubuntu-lineageos-dev" | sudo tee "$CONTAINER_PATH/etc/hostname" > /dev/null
+          echo "127.0.0.1 localhost ubuntu-lineageos-dev" | sudo tee "$CONTAINER_PATH/etc/hosts" > /dev/null
 
           # APT sources (focal + security/updates)
           sudo tee "$CONTAINER_PATH/etc/apt/sources.list" > /dev/null <<'EOF'
@@ -90,37 +88,62 @@ export PATH="/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin"
 # Install exact packages from LineageOS guide for Ubuntu 20.04
 /bin/apt-get install -y \
     bc bison build-essential ccache curl flex \
-    g++-multilib gcc-multilib git git-lfs gnupg gperf \
+    g++-multilib gcc-multilib git git-lfs gnupg gpg gperf \
     imagemagick lib32readline-dev lib32z1-dev libelf-dev \
     liblz4-tool lz4 libsdl1.2-dev libssl-dev libxml2 libxml2-utils \
     lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev \
     libncurses5 libncurses5-dev lib32ncurses5-dev \
     python3 python3-pip python-is-python3 openjdk-11-jdk \
-    vim htop tree wget nano
+    sudo vim htop tree wget nano
 
-# Create build user
-useradd -m -s /bin/bash -G sudo lineage
-echo "lineage:lineage" | chpasswd
+# Create build user and home directory properly (only if user doesn't exist)
+export DEBIAN_FRONTEND=noninteractive
+if ! id -u lineage >/dev/null 2>&1; then
+    echo "Creating lineage user..."
+    useradd -m -s /bin/bash -G sudo lineage
+    echo "Setting password..."
+    echo "lineage:lineage" | chpasswd
+    echo "User created successfully."
+else
+    echo "Lineage user already exists."
+fi
+echo "Current users:"
+id lineage
+cat /etc/passwd | grep -E "^(lineage|root)"
 
-# Fix permissions for existing files
-chown -R lineage:lineage /home/lineage
+# Check groups and install repo tool
+echo "Checking groups..."
+groups
+echo "Installing repo tool..."
+if [ ! -d /home/lineage/bin ]; then
+    mkdir -p /home/lineage/bin
+fi
+curl https://storage.googleapis.com/git-repo-downloads/repo > /home/lineage/bin/repo
+chmod +x /home/lineage/bin/repo
 
-# User environment
-sudo -u lineage bash <<'USER_SETUP'
-cd /home/lineage
+# Set up environment (avoid duplicate entries)
+if ! grep -q 'export PATH="$HOME/bin:$PATH"' /home/lineage/.bashrc 2>/dev/null; then
+    echo 'export PATH="$HOME/bin:$PATH"' >> /home/lineage/.bashrc
+fi
+if ! grep -q 'export USE_CCACHE=1' /home/lineage/.bashrc 2>/dev/null; then
+    echo 'export USE_CCACHE=1' >> /home/lineage/.bashrc
+fi
 
-git config --global user.email "builder@example.com"
-git config --global user.name "Lineage Builder"
-git config --global trailer.changeid.key "Change-Id"
+# Initialize ccache (only if ccache is installed)
+if command -v ccache >/dev/null 2>&1; then
+    echo "Initializing ccache..."
+    ccache -M 50G 2>/dev/null || echo "Warning: Failed to set ccache size"
+else
+    echo "Warning: ccache not installed, skipping cache setup"
+fi
 
-mkdir -p ~/bin
-curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-chmod +x ~/bin/repo
-echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
-echo 'export USE_CCACHE=1' >> ~/.bashrc
+# Create user-specific directories with proper ownership
+echo "Setting up user environment..."
+mkdir -p /home/lineage/.lineageos/lineage-22.1
+chown -R lineage:lineage /home/lineage/.lineageos
 
-mkdir -p .lineageos/lineage-22.1
-cat > .lineageos/lineage-22.1/README.md <<'README'
+if [ ! -f /home/lineage/.lineageos/lineage-22.1/README.md ]; then
+    cat > /home/lineage/.lineageos/lineage-22.1/README.md <<'README'
 # LineageOS 22.1 for marlin
 
 Initialize:
@@ -134,18 +157,25 @@ Build:
   breakfast marlin
   brunch marlin
 README
+fi
 
-# Add PATH to user profile
-echo 'export PATH="/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin"' >> ~/.bashrc
-USER_SETUP
+# Add PATH to user profile (avoid duplicate entries)
+if ! grep -q 'export PATH="/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin:$HOME/bin"' /home/lineage/.bashrc 2>/dev/null; then
+    echo 'export PATH="/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin:$HOME/bin"' >> /home/lineage/.bashrc
+fi
 
-# Initialize ccache
-ccache -M 50G
-
-echo "✅ LineageOS 22.1 build environment ready!"
+# Set proper ownership for all lineage user files
+chown -R lineage:lineage /home/lineage
+echo "Lineage user environment setup completed"
 EOF
 
           sudo chmod +x "$CONTAINER_PATH/root/lineageos-setup.sh"
+          # Execute the setup script inside the container
+          sudo systemd-nspawn -D "$CONTAINER_PATH" \
+            --bind-ro=/etc/resolv.conf:/etc/resolv.conf \
+            /root/lineageos-setup.sh
+          echo "✅ LineageOS 22.1 build environment ready!"
+          
           # Verify container was created successfully
           if sudo test -d "$CONTAINER_PATH" && sudo test -f "$CONTAINER_PATH/bin/apt-get"; then
             echo "✅ Container created successfully. Run 'ubuntu-lineageos-dev setup' next."
@@ -171,14 +201,26 @@ EOF
             echo "Container not found. Run 'create' and 'setup' first."
             exit 1
           fi
-          sudo systemd-nspawn -D "$CONTAINER_PATH" \
-            --bind="$HOME/.lineageos:/home/lineage/.lineageos" \
-            --bind="$HOME/.ccache:/home/lineage/.ccache" \
-            --bind="$HOME/.android:/home/lineage/.android" \
-            --bind="$HOME/.ssh:/home/lineage/.ssh" \
-            --bind="$HOME/.config/git/config:/home/lineage/.config/git/config" \
-            --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin" \
-            --console=interactive
+          # Default to lineage user if created, otherwise use root
+          if sudo systemd-nspawn -D "$CONTAINER_PATH" id lineage >/dev/null 2>&1; then
+            sudo systemd-nspawn -D "$CONTAINER_PATH" \
+              --user=lineage \
+              --bind="$HOME/.lineageos:/home/lineage/.lineageos" \
+              --bind="$HOME/.ccache:/home/lineage/.ccache" \
+              --bind="$HOME/.android:/home/lineage/.android" \
+              --bind="$HOME/.ssh:/home/lineage/.ssh" \
+              --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin" \
+              --console=interactive
+          else
+            echo "Lineage user not found, using root..."
+            sudo systemd-nspawn -D "$CONTAINER_PATH" \
+              --bind="$HOME/.lineageos:/root/.lineageos" \
+              --bind="$HOME/.ccache:/root/.ccache" \
+              --bind="$HOME/.android:/root/.android" \
+              --bind="$HOME/.ssh:/root/.ssh" \
+              --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin" \
+              --console=interactive
+          fi
           ;;
 
         start)
@@ -186,15 +228,27 @@ EOF
             echo "Container not found. Run 'create' and 'setup' first."
             exit 1
           fi
-          sudo systemd-nspawn -D "$CONTAINER_PATH" \
-            --boot \
-            --network-veth \
-            --bind="$HOME/.lineageos:/home/lineage/.lineageos" \
-            --bind="$HOME/.ccache:/home/lineage/.ccache" \
-            --bind="$HOME/.android:/home/lineage/.android" \
-            --bind="$HOME/.ssh:/home/lineage/.ssh" \
-            --bind="$HOME/.gitconfig:/home/lineage/.gitconfig" 2>/dev/null || true \
-            --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin"
+          # Default to lineage user if created, otherwise use root
+          if sudo systemd-nspawn -D "$CONTAINER_PATH" id lineage >/dev/null 2>&1; then
+            sudo systemd-nspawn -D "$CONTAINER_PATH" \
+              --boot \
+              --user=lineage \
+              --network-veth \
+              --bind="$HOME/.lineageos:/home/lineage/.lineageos" \
+              --bind="$HOME/.ccache:/home/lineage/.ccache" \
+              --bind="$HOME/.android:/home/lineage/.android" \
+              --bind="$HOME/.ssh:/home/lineage/.ssh" \
+              --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin"
+          else
+            sudo systemd-nspawn -D "$CONTAINER_PATH" \
+              --boot \
+              --network-veth \
+              --bind="$HOME/.lineageos:/root/.lineageos" \
+              --bind="$HOME/.ccache:/root/.ccache" \
+              --bind="$HOME/.android:/root/.android" \
+              --bind="$HOME/.ssh:/root/.ssh" \
+              --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin"
+          fi
           ;;
 
         init-device)
@@ -233,15 +287,23 @@ EOF
             echo "Build script not found. Run 'init-device $DEVICE' first."
             exit 1
           fi
+          # Use lineage user if available, otherwise use root
+          if sudo systemd-nspawn -D "$CONTAINER_PATH" id lineage >/dev/null 2>&1; then
+            USER_PATH="/home/lineage/.lineageos/lineage-22.1"
+            USER_NAME="lineage"
+          else
+            USER_PATH="/root/.lineageos/lineage-22.1"
+            USER_NAME="root"
+          fi
+
           sudo systemd-nspawn -D "$CONTAINER_PATH" \
-            --bind="$HOME/.lineageos:/home/lineage/.lineageos" \
+            --bind="$HOME/.lineageos:$USER_PATH" \
             --bind="$HOME/.ccache:/home/lineage/.ccache" \
             --bind="$HOME/.android:/home/lineage/.android" \
             --bind="$HOME/.ssh:/home/lineage/.ssh" \
-            --bind="$HOME/.gitconfig:/home/lineage/.gitconfig" 2>/dev/null || true \
             --setenv="PATH=/bin:/usr/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin:/bin" \
-            --user=lineage \
-            --chdir=/home/lineage/.lineageos/lineage-22.1 \
+            --user="$USER_NAME" \
+            --chdir="$USER_PATH" \
             ./build-$DEVICE.sh
           ;;
 

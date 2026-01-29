@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, host ? null, ... }:
 
 let
   myUsername = "luiz";
@@ -10,7 +10,7 @@ in {
   ];
 
   jovian = {
-    devices.steamdeck = {
+    devices.steamdeck = lib.mkIf (host == "deck") {
       enable = true;
       autoUpdate = true;
       enableOsFanControl = true;
@@ -18,7 +18,7 @@ in {
       # enableXorgRotation = true;
     };
     
-    hardware = {
+    hardware = lib.mkIf (host == "deck") {
       amd.gpu.enableBacklightControl = true;
       amd.gpu.enableEarlyModesetting = true;
       has.amd.gpu = true; 
@@ -64,9 +64,11 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    proton-ge-custom
+    # Add nixpkgs here
+
   ] ++ (with jovian-chaotic; [
     mangohud
+    proton-ge-custom
     # mesa-radeonsi-jupiter
     powerbuttond
     steamdeck-bios-fwupd

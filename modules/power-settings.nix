@@ -14,7 +14,11 @@
     START_CHARGE_THRESH_BAT0 = 60;
     STOP_CHARGE_THRESH_BAT0 = 80;
     
-    HandlePowerKey = "suspend";
+    # Keep Wi-Fi power management conservative
+    WIFI_PWR_ON_AC = "off";
+    WIFI_PWR_ON_BAT = "on";
   };
 
+  # Handle power key properly with systemd
+  services.logind.powerKey = "suspend";
 }

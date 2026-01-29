@@ -26,7 +26,7 @@
   gdk-pixbuf,
   pango,
   glib,
-  wrapGAppsHook,
+  wrapGAppsHook3,
   gtk3Support ? false,
   gtk3 ? null,
   librsvg,
@@ -70,7 +70,7 @@ stdenv.mkDerivation rec {
     wayland-protocols
     wayland-scanner
     makeWrapper
-    wrapGAppsHook
+    wrapGAppsHook3
     gobject-introspection
   ];
 
