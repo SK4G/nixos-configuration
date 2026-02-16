@@ -62,7 +62,7 @@ let
   };
   
   resolvePkgs = import resolvePin { 
-    inherit (pkgs) system; 
+    system = pkgs.stdenv.hostPlatform.system; 
     config.allowUnfree = true;
   };
 in

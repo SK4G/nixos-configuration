@@ -1,10 +1,5 @@
 {
   inputs = {
-    chaotic = {
-      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
@@ -13,7 +8,6 @@
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # jovian.follows = "chaotic/jovian";
 
     yuzu = {
       url = "git+https://codeberg.org/K900/yuzu-flake";
@@ -80,9 +74,13 @@
                 download-buffer-size = 524288000;
                 substituters = [
                   "https://0uptime.cachix.org"
+                  "https://hacker1024-jovian.cachix.org"
+                  "https://sk4g.cachix.org"
                 ];
                 trusted-public-keys = [
                   "0uptime.cachix.org-1:ctw8yknBLg9cZBdqss+5krAem0sHYdISkw/IFdRbYdE="
+                  "hacker1024-jovian.cachix.org-1:YGV/5tSwGzqffiA1TuhqnWN8PWlJX6nwPo6ZTMcRHmg="
+                  "sk4g.cachix.org-1:HjAI1vzQdRg7hntouj5Suy2ytOqHKdDeZZCThVAZDOM="
                 ];
               };
               nixpkgs.config = {
@@ -125,7 +123,6 @@
             #   ];
             # })
             inputs.jovian.nixosModules.jovian
-            inputs.chaotic.nixosModules.default
 
             ./modules/jovian.nix
             ./modules/hardware/hw-acceleration-amd.nix
@@ -146,6 +143,7 @@
             ./modules/virt-manager.nix
             ./modules/waydroid.nix
             ./modules/dev-containers
+            ./modules/nixosModules/services.nix
             
             ({ pkgs, ... }: {
               environment.systemPackages =
@@ -165,7 +163,6 @@
             #   ];
             # })
             inputs.jovian.nixosModules.jovian
-            inputs.chaotic.nixosModules.default
 
             ./modules/jovian.nix
             ./modules/hardware/hw-acceleration-nvidia.nix

@@ -56,7 +56,7 @@
     rofi
     # rxvt-unicode
     widevine-cdm
-    xorg.xkill
+    xkill
   ];
 
   fonts.packages = with pkgs; [

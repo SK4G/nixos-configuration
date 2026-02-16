@@ -4,36 +4,36 @@
   programs.thunar.enable = true;
   programs.xfconf.enable = true;
 
-  programs.thunar.plugins = with pkgs.xfce; [
+  programs.thunar.plugins = with pkgs; [
     thunar-archive-plugin
     thunar-volman
   ];
   
   environment.systemPackages = with pkgs; [    
     lxappearance
-    xfce.xfce4-appfinder
-    xfce.xfce4-battery-plugin
-    xfce.xfce4-clipman-plugin
-    # xfce.xfce4-netload-plugin
-    xfce.xfce4-power-manager
-    xfce.xfce4-screenshooter
-    # xfce.xfce4-sensors-plugin
-    xfce.xfce4-settings
-    xfce.xfce4-taskmanager
-    xfce.xfce4-xkb-plugin
-    # xfce.xfce4-weather-plugin
+    xfce4-appfinder
+    xfce4-battery-plugin
+    xfce4-clipman-plugin
+    # xfce4-netload-plugin
+    xfce4-power-manager
+    xfce4-screenshooter
+    # xfce4-sensors-plugin
+    xfce4-settings
+    xfce4-taskmanager
+    xfce4-xkb-plugin
+    # xfce4-weather-plugin
 
-    xfce.catfish
-    xfce.exo
-    xfce.garcon
-    xfce.mousepad
-    xfce.ristretto
-    #xfce.thunar
-    #xfce.thunar-archive-plugin
-    #xfce.thunar-volman
-    xfce.tumbler
-    xfce.xfconf
-    # xfce.xfwm4
+    catfish
+    exo
+    garcon
+    mousepad
+    ristretto
+    #thunar
+    #thunar-archive-plugin
+    #thunar-volman
+    tumbler
+    xfconf
+    # xfwm4
 ];
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images

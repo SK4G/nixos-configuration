@@ -27,8 +27,7 @@ in {
     steam = {
       enable = true;
       # autoStart = true;
-      # desktopSession = "none+awesome";
-      desktopSession = "xfce+awesome";
+      # desktopSession = "xfce+awesome";
       user = myUsername;
     };
     steamos = {
@@ -57,18 +56,14 @@ in {
 
   # services.displayManager.sddm.enable = lib.mkIf config.jovian.steam.autoStart (lib.mkForce false);
   # Default kernel
-  boot.kernelPackages = pkgs.jovian-chaotic.linuxPackages_jovian;
+  # boot.kernelPackages = pkgs.jovian-chaotic.linuxPackages_jovian;
   # Specialisation for DaVinci Resolve working kernel
-  specialisation.davinci-resolve.configuration = {
-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
-  };
+  # specialisation.davinci-resolve.configuration = {
+  #   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+  # };
 
   environment.systemPackages = with pkgs; [
-    # Add nixpkgs here
-
-  ] ++ (with jovian-chaotic; [
     mangohud
-    proton-ge-custom
     # mesa-radeonsi-jupiter
     powerbuttond
     steamdeck-bios-fwupd
@@ -76,5 +71,16 @@ in {
     steamdeck-firmware
     steamdeck-hw-theme
     mesa-radeonsi-jupiter
-  ]);
+  ]; 
+  # ++ (with jovian-chaotic; [
+  #   mangohud
+  #   proton-ge-custom
+  #   # mesa-radeonsi-jupiter
+  #   powerbuttond
+  #   steamdeck-bios-fwupd
+  #   steamdeck-dsp
+  #   steamdeck-firmware
+  #   steamdeck-hw-theme
+  #   mesa-radeonsi-jupiter
+  # ]);
 }
