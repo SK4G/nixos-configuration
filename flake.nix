@@ -182,13 +182,6 @@
             ./modules/virt-manager.nix
             ./modules/waydroid.nix
             ./modules/dev-containers
-            
-            ({ pkgs, ... }: {
-              environment.systemPackages =
-                builtins.map (path: pkgs.callPackage path { }) [
-                  ./modules/acli.nix
-                ];
-            })
           ];
         }
         {
