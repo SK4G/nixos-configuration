@@ -1,9 +1,9 @@
 name: "Build NixOS Configurations"
 on:
-  pull_request:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Update flake.lock"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
