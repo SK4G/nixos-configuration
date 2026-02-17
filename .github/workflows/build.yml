@@ -8,6 +8,9 @@ on:
 
 jobs:
   build-nixos:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.head_commit.message == 'chore(flake): auto-update flake.lock'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
