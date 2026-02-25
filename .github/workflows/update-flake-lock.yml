@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_ACTIONS_PAT }}
 
       - name: Install Determinate Nix
         uses: DeterminateSystems/determinate-nix-action@main

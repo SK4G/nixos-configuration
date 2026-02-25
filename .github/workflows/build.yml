@@ -1,16 +1,13 @@
 name: "Build NixOS Configurations"
 on:
-  workflow_run:
-    workflows: ["Update flake.lock"]
-    types: [completed]
+  push:
     branches: [main]
+    paths:
+      - 'flake.lock'
   workflow_dispatch:
 
 jobs:
   build-nixos:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.head_commit.message == 'chore(flake): auto-update flake.lock'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
