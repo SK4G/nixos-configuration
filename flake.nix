@@ -101,15 +101,13 @@
           extraModules = [
             ./modules/desktop
             ./modules/desktop/awesome.nix
-            # ./modules/desktop/gnome.nix
-            # ./modules/desktop/hyprland.nix
 
-            ./modules/hardware/hw-acceleration-amd.nix
+            ./modules/hardware/hw-acceleration-intel.nix
             ./modules/bluetooth.nix
             ./modules/desktop/desktop-packages.nix
             # ./home-manager/development-packages.nix
-            ./modules/office.nix
-            ./modules/printers
+            # ./modules/office.nix
+            # ./modules/printers
             ./modules/laptop.nix
           ];
         }
@@ -145,12 +143,6 @@
             ./modules/dev-containers
             ./modules/nixosModules/services.nix
             
-            ({ pkgs, ... }: {
-              environment.systemPackages =
-                builtins.map (path: pkgs.callPackage path { }) [
-                  ./modules/acli.nix
-                ];
-            })
           ];
         }
         {

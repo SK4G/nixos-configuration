@@ -19,8 +19,6 @@
   # startx must be enabled for gamescope x sessions to be started
   services.xserver.displayManager.startx.enable = true;
   services.xserver.displayManager.startx.generateScript = true;
-  # services.displayManager.defaultSession = "xfce";
-  # services.displayManager.defaultSession = "none+awesome";
   services.displayManager.defaultSession = "xfce+awesome";
   services.xserver.windowManager.awesome.enable = true;
   services.xserver.windowManager.awesome = {

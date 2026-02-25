@@ -43,9 +43,11 @@
     # imlib2
     # libmtp
     # lsb-release
+    mission-center
     # numlockx
     ookla-speedtest
     ripgrep
+    scrcpy
     # sof-firmware
     # sshpass
     spotdl

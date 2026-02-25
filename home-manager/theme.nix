@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, host, ... }:
 
 {
   home.packages = with pkgs; [
@@ -12,10 +12,14 @@
     XCURSOR_THEME = "Bibata-Modern-Ice";
   };
   
-  xresources.properties = {
-    "Xft.dpi" = 144;
-    "Xcursor.theme" = "Bibata-Modern-Ice";
-  };
+  xresources.properties = lib.mkMerge [
+    {
+      "Xcursor.theme" = "Bibata-Modern-Ice";
+    }
+    (lib.mkIf (host == "deck") {
+      "Xft.dpi" = 144;
+    })
+  ];
   xsession = {
     initExtra = "xrdb -merge ~/.Xresources";
     # numlock.enable = true;

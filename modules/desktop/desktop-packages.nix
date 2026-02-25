@@ -5,28 +5,13 @@
     # discord
     evince
     feh
-    # filezilla
-    # firefox
-    # flameshot
-    # chromium
     # google-chrome
-    haruna
-    # kate
     lxappearance
-    # micro
-    mission-center
     mpv
-    # nitrogen
-    # protonvpn-cli
-    # pywal
-    scrcpy
-    # telegram-desktop
-    # variety
     vivaldi
     vivaldi-ffmpeg-codecs
     # vlc
     # xournalpp
-    zoom
 
     #### media
     # jellyfin

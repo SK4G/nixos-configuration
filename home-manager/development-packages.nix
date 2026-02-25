@@ -1,11 +1,4 @@
 { pkgs, config, ... }:
-
-# let
-
-#   pkgsUnstable = import <nixpkgs-unstable> {};
-
-# in
-
 {
   home.packages = with pkgs; [
     android-tools

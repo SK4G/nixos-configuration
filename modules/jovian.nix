@@ -72,6 +72,13 @@ in {
     steamdeck-hw-theme
     mesa-radeonsi-jupiter
   ]; 
+  # Prevent the upstream jupiter controller updater service from starting
+  # during rebuilds (it fails enumerating devices on this system).
+  # systemd = {
+  #   services."jupiter-controller-update" = {
+  #     enable = lib.mkIf (host == "deck") (lib.mkForce false);
+  #   };
+  # };
   # ++ (with jovian-chaotic; [
   #   mangohud
   #   proton-ge-custom

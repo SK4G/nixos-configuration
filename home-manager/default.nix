@@ -1,20 +1,28 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, host, ... }:
 let
+  cb14Packages = {
+    home.packages = with pkgs; [
+      android-tools
+      antigravity
+    ];
+  };
+
   dotfiles = lib.mkMerge [
     {
       home.stateVersion = "24.05";
     }
+    (if host == "cb14" then cb14Packages
+    else if host == "deck" || host == "emerald" then ./development-packages.nix
+    else {})
     # ./chrome.nix
-    ./development-packages.nix
-    # ./firefox.nix
     ./home-files.nix
-    ./kodi.nix
     ./theme.nix
     ./xdg.nix
   ];
 in
 {
   home-manager = {
+    extraSpecialArgs = { inherit host; };
     users = {
       luiz = dotfiles;
       # root = dotfiles;
