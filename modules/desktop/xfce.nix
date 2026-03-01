@@ -24,7 +24,7 @@
     # xfce4-weather-plugin
 
     catfish
-    exo
+    xfce4-exo
     garcon
     mousepad
     ristretto
