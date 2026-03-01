@@ -16,7 +16,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      
+
+      - name: Free up to 130GB of space for the Nix store
+        uses: wimpysworld/nothing-but-nix@main
+
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
