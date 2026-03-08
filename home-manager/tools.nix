@@ -25,7 +25,7 @@
     most
     # nano
     ncdu
-    neofetch
+    fastfetch
     # resilio-sync
     # sshpass
     # ventoy
