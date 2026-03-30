@@ -113,6 +113,7 @@
         }
         {
           host = "deck";
+          configuration = "default.nix";
           extraModules = [
             # ({ pkgs, ... }: {
             #   nixpkgs.overlays = [
@@ -138,6 +139,7 @@
             ./modules/printers
             ./modules/polkit.nix
             # ./modules/power-settings.nix
+            ./modules/docker.nix
             ./modules/virt-manager.nix
             ./modules/waydroid.nix
             ./modules/dev-containers

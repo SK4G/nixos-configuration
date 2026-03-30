@@ -11,6 +11,7 @@
     # gh
     meld
     nodejs
+    pinokio
     pnpm
     # sublime4
     # (import <nixpkgs-unstable> {}).vscode
@@ -31,11 +32,9 @@
     # ]))
     # tk
     # tcl
-
     # llm tools
     lmstudio
     # llama-cpp
-
     # build tools
     gcc
     gnumake

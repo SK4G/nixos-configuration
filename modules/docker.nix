@@ -4,10 +4,12 @@
     docker-compose
   ];
   networking.dhcpcd.denyInterfaces = [ "docker*" "ve*" "br*" ];
+  users.extraGroups.docker.members = [ "luiz" ];
   virtualisation.docker = {
     enable = true;
-    liveRestore = false;
+    enableOnBoot = false;
     autoPrune.enable = true;
-    autoPrune.dates = weekly;
+    autoPrune.dates = "weekly";
+    liveRestore = false;
   };
 }

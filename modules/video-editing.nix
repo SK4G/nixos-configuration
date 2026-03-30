@@ -24,7 +24,7 @@
     ffmpeg
     obs-studio 
     obs-studio-plugins.obs-vkcapture
-    ocenaudio
+    # ocenaudio
     peek
     davinci-resolve-studio
   ];
