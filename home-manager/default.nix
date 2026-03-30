@@ -9,7 +9,7 @@ let
 
   dotfiles = lib.mkMerge [
     {
-      home.stateVersion = "24.05";
+      home.stateVersion = "26.05";
     }
     (if host == "cb14" then cb14Packages
     else if host == "deck" || host == "emerald" then ./development-packages.nix
