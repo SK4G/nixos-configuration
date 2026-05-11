@@ -8,8 +8,8 @@
   config = {
     home-manager.users.luiz = {
       imports = [
-        ./home.nix
-        ../../modules/music/default.nix
+        # ./home.nix
+        # ../../modules/music/default.nix
       ];
     };
   };

@@ -11,12 +11,12 @@
     # emulationstation-de
     # cemu
     # heroic
-    (lutris.override {
-       extraPkgs = pkgs: [
-         wine
-         winetricks
-       ];
-    })
+    # (lutris.override {
+    #    extraPkgs = pkgs: [
+    #      wine
+    #      winetricks
+    #    ];
+    # })
     # mangohud
     # steam-rom-manager
     # yuzuPackages.early-access
