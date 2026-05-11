@@ -67,7 +67,7 @@
             # ./modules/sysctl.nix
             ./home-manager/tools.nix
             ./modules/users.nix
-            ./modules/google-chrome.nix
+            # ./modules/google-chrome.nix
             
             {
               nix.settings = {

@@ -57,7 +57,7 @@
         ff = "only";
       };
     };
-        ignores = [
+    ignores = [
       # ---> VisualStudioCode
       ".vscode/*"
       "!.vscode/settings.json"

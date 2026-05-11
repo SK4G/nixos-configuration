@@ -5,7 +5,7 @@
     # discord
     evince
     feh
-    # google-chrome
+    google-chrome
     lxappearance
     mpv
     vivaldi
