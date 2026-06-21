@@ -1,9 +1,9 @@
-{ config, pkgs, lib, host, ... }:
+{ config, pkgs, lib, host, inputs, ... }:
 let
   cb14Packages = {
     home.packages = with pkgs; [
       android-tools
-      antigravity
+      inputs.antigravity-nix.packages.${pkgs.system}.google-antigravity-ide
     ];
   };
 
@@ -22,7 +22,7 @@ let
 in
 {
   home-manager = {
-    extraSpecialArgs = { inherit host; };
+    extraSpecialArgs = { inherit host inputs; };
     users = {
       luiz = dotfiles;
       # root = dotfiles;

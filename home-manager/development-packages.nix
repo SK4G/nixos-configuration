@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, config, inputs, ... }:
 {
   home.packages = with pkgs; [
     android-tools
-    antigravity
+    inputs.antigravity-nix.packages.${pkgs.system}.google-antigravity-ide
     # apkeditor
     # android-studio
     # android-file-transfer
