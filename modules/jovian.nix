@@ -35,7 +35,7 @@ in {
     };
 
     decky-loader = {
-      enable = true;
+      enable = false;
       ### needed for powertools. use with nix-ld ?
       # extraPackages = [pkgs.pciutils];
       # extraPythonPackages = ;

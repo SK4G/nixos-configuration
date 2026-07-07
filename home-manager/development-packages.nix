@@ -12,7 +12,7 @@
     meld
     nodejs
     pinokio
-    pnpm
+    bun
     # sublime4
     # (import <nixpkgs-unstable> {}).vscode
 

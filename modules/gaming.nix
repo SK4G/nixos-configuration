@@ -6,6 +6,7 @@
     dxvk
     vkd3d
     vkd3d-proton
+    hydralauncher
 
     # streamdeck-ui
     # emulationstation-de
