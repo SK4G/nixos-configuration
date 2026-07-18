@@ -3,8 +3,10 @@ let
   cb14Packages = {
     home.packages = with pkgs; [
       android-tools
-      inputs.antigravity-nix.packages.${pkgs.system}.google-antigravity-ide
-    ];
+    ] ++ (with inputs.antigravity-nix.packages.${pkgs.system}; [
+      google-antigravity-ide
+      google-antigravity
+    ]);
   };
 
   dotfiles = lib.mkMerge [

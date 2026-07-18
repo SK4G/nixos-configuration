@@ -2,7 +2,6 @@
 {
   home.packages = with pkgs; [
     android-tools
-    inputs.antigravity-nix.packages.${pkgs.system}.google-antigravity-ide
     # apkeditor
     # android-studio
     # android-file-transfer
@@ -38,7 +37,10 @@
     # build tools
     gcc
     gnumake
-  ];
+  ] ++ (with inputs.antigravity-nix.packages.${pkgs.system}; [
+    google-antigravity-ide
+    google-antigravity
+  ]);
 
   programs.git = {
     enable = true;
