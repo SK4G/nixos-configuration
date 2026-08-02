@@ -147,7 +147,6 @@
             ./modules/virt-manager.nix
             ./modules/waydroid.nix
             ./modules/dev-containers
-            ./modules/nixosModules/services.nix
             
           ];
         }

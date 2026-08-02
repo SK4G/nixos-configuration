@@ -50,7 +50,10 @@
     scrcpy
     # sof-firmware
     # sshpass
+    picard
     spotdl
+    deno
+    jdupes
     sysz
     texliveBasic
     tree

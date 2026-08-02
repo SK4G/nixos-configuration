@@ -43,7 +43,6 @@
     # luajitPackages.vicious
     picom
 
-    arc-theme
     font-manager
     dconf-editor
     file-roller
