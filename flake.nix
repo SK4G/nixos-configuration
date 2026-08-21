@@ -1,11 +1,11 @@
 {
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
-
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
+    };
+
+    nixpkgs = {
+      follows = "jovian/nixpkgs";
     };
 
     yuzu = {
