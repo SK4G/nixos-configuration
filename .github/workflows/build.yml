@@ -3,32 +3,102 @@ on:
   push:
     branches: [main]
     paths:
-      - 'flake.lock'
+      - "flake.lock"
+      - "**/*.nix"
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   build-nixos:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     strategy:
       fail-fast: false
       matrix:
-        hostname: [ "deck" ] 
+        hostname: ["deck"]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@main
 
-      - name: Free up to 130GB of space for the Nix store
+      - name: Free up space for the Nix store
         uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: holster
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
+      # Stage 1: Fail fast evaluation
+      - name: Dry Run / Evaluation Check
+        id: dry_run
+        continue-on-error: true
+        run: |
+          nix build --dry-run .#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel 2>&1 | tee eval.log
+          if grep -q "evaluation warning:" eval.log; then
+            echo "has_warnings=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Delegate fix to Google Jules (Evaluation Failure / Migration Hints)
+        # Only trigger on main or workflow_dispatch, not during a PR (to prevent infinite loops)
+        if: always() && (steps.dry_run.outcome == 'failure' || steps.dry_run.outputs.has_warnings == 'true') && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Nix evaluation failed or produced deprecation warnings for host \`${{ matrix.hostname }}\`." > issue_body.md
+          echo "Please analyze the logs below, update the relevant .nix configuration, and submit a PR." >> issue_body.md
+          echo "" >> issue_body.md
+          echo "\`\`\`" >> issue_body.md
+          tail -n 120 eval.log >> issue_body.md
+          echo "\`\`\`" >> issue_body.md
+
+          gh label create jules --color "0e8a16" --description "Delegated to Google Jules" || true
+
+          gh issue create \
+            --title "Nix Evaluation / Deprecation: ${{ matrix.hostname }}" \
+            --body-file issue_body.md \
+            --label "jules"
+
+      - name: Stop workflow if evaluation failed
+        if: always() && steps.dry_run.outcome == 'failure'
+        run: exit 1
+
+      # Stage 2: Build if dry-run evaluation passed
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
           name: sk4g
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Build System
+        id: build
+        continue-on-error: true
         run: |
-          nix build .#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel
+          nix build .#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel 2>&1 | tee build.log
+
+      - name: Delegate fix to Google Jules (Build Failure)
+        # Catch build-time issues like hash mismatches in fixed-output derivations
+        if: always() && steps.build.outcome == 'failure' && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Nix build failed on host \`${{ matrix.hostname }}\`." > issue_body.md
+          echo "Please fix the hash mismatches or build errors and submit a PR." >> issue_body.md
+          echo "" >> issue_body.md
+          echo "\`\`\`" >> issue_body.md
+          tail -n 150 build.log >> issue_body.md
+          echo "\`\`\`" >> issue_body.md
+
+          gh label create jules --color "0e8a16" --description "Delegated to Google Jules" || true
+
+          gh issue create \
+            --title "Build Failure: ${{ matrix.hostname }}" \
+            --body-file issue_body.md \
+            --label "jules"
+
+      - name: Fail workflow if build failed
+        if: always() && steps.build.outcome == 'failure'
+        run: exit 1
