@@ -37,7 +37,7 @@
     # build tools
     gcc
     gnumake
-  ] ++ (with inputs.antigravity-nix.packages.${pkgs.system}; [
+  ] ++ (with inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}; [
     google-antigravity-ide
     google-antigravity
   ]);

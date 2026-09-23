@@ -3,7 +3,7 @@ let
   cb14Packages = {
     home.packages = with pkgs; [
       android-tools
-    ] ++ (with inputs.antigravity-nix.packages.${pkgs.system}; [
+    ] ++ (with inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}; [
       google-antigravity-ide
       google-antigravity
     ]);

@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    libreoffice-fresh
+    libreoffice
     # wpsoffice
     # xournalpp
   ];
