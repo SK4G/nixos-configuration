@@ -68,6 +68,36 @@ jobs:
         if: always() && steps.dry_run.outcome == 'failure'
         run: exit 1
 
+      # Stage 1.5: Check Volatile Sources (FODs that change upstream)
+      - name: Check Volatile Sources (DaVinci Resolve)
+        id: volatile
+        continue-on-error: true
+        run: |
+          nix build .#nixosConfigurations.${{ matrix.hostname }}.pkgs.davinci-resolve-studio.davinci.src --no-substitutes 2>&1 | tee volatile.log
+
+      - name: Delegate fix to Google Jules (Volatile Source Failure)
+        if: always() && steps.volatile.outcome == 'failure' && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Volatile source verification failed on host \`${{ matrix.hostname }}\`." > issue_body.md
+          echo "Please fix the hash mismatches and submit a PR." >> issue_body.md
+          echo "" >> issue_body.md
+          echo "\`\`\`" >> issue_body.md
+          tail -n 50 volatile.log >> issue_body.md
+          echo "\`\`\`" >> issue_body.md
+
+          gh label create jules --color "0e8a16" --description "Delegated to Google Jules" || true
+
+          gh issue create \
+            --title "Source Hash Mismatch: ${{ matrix.hostname }}" \
+            --body-file issue_body.md \
+            --label "jules"
+
+      - name: Fail workflow if volatile source failed
+        if: always() && steps.volatile.outcome == 'failure'
+        run: exit 1
+
       # Stage 2: Build if dry-run evaluation passed
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
