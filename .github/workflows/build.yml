@@ -52,7 +52,9 @@ jobs:
           echo "Please analyze the logs below, update the relevant .nix configuration, and submit a PR." >> issue_body.md
           echo "" >> issue_body.md
           echo "\`\`\`" >> issue_body.md
-          tail -n 120 eval.log >> issue_body.md
+          grep -iE "(warning|error):" eval.log | head -n 20 >> issue_body.md || true
+          echo "..." >> issue_body.md
+          tail -n 30 eval.log >> issue_body.md
           echo "\`\`\`" >> issue_body.md
 
           gh label create jules --color "0e8a16" --description "Delegated to Google Jules" || true
