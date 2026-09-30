@@ -1,4 +1,5 @@
 { config, pkgs, ... }:
+
 # Davinci Resolve does not work with Valve kernel 6.5 
 # It works with cachyos kernel 6.10
 # https://discourse.nixos.org/t/davinci-resolve-studio-install-issues/37699/53
@@ -6,8 +7,8 @@
 {
   nixpkgs.overlays = [
     (final: prev: {
-      davinci-resolve-studio = prev.davinci-resolve-studio.override (old: {
-        buildFHSEnv = a: (prev.buildFHSEnv (a // {
+      davinci-resolve-studio = final.unstable.davinci-resolve-studio.override (old: {
+        buildFHSEnv = a: (final.unstable.buildFHSEnv (a // {
           extraBwrapArgs = a.extraBwrapArgs ++ [
             ''--bind /run/opengl-driver/etc/OpenCL /etc/OpenCL''
             # redirect Resolve's "Extras" dir away from /nix/store to a writable location

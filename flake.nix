@@ -8,6 +8,10 @@
       follows = "jovian/nixpkgs";
     };
 
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+    };
+
     yuzu = {
       url = "git+https://codeberg.org/K900/yuzu-flake";
       inputs.nixpkgs.follows = "nixpkgs";
