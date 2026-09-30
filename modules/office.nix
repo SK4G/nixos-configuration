@@ -38,29 +38,4 @@
     (google-fonts.override { fonts = [ "Nunito" ]; })
     # (nerd-fonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
-
-  # Configure emoji font
-  fonts.fontconfig.localConf = ''
-    <?xml version="1.0"?>
-    <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-    <fontconfig>
-      <match target="scan">
-        <test name="family">
-          <string>Noto Color Emoji</string>
-        </test>
-        <edit name="scalable" mode="assign">
-          <bool>true</bool>
-        </edit>
-      </match>
-
-      <match target="pattern">
-        <test name="prgname">
-          <string>chrome</string>
-        </test>
-        <edit name="family" mode="prepend_first">
-          <string>Noto Color Emoji</string>
-        </edit>
-      </match>
-    </fontconfig>
-  '';
 }
