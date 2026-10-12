@@ -16,7 +16,7 @@ let
     (if host == "cb14" then cb14Packages
     else if host == "deck" || host == "emerald" then ./development-packages.nix
     else {})
-    # ./chrome.nix
+    ./chrome.nix
     ./home-files.nix
     ./theme.nix
     ./xdg.nix
