@@ -64,13 +64,6 @@ in {
 
   environment.systemPackages = with pkgs; [
     mangohud
-    # mesa-radeonsi-jupiter
-    powerbuttond
-    steamdeck-bios-fwupd
-    steamdeck-dsp
-    steamdeck-firmware
-    steamdeck-hw-theme
-    mesa-radeonsi-jupiter
   ]; 
   # Prevent the upstream jupiter controller updater service from starting
   # during rebuilds (it fails enumerating devices on this system).
